@@ -1,3 +1,13 @@
 arm-none-eabi-gcc -Wall -nostdlib -fno-builtin -ffreestanding -c main.c
 arm-none-eabi-ld -s -Bsymbolic -gc-sections -Tmain.ld -static -Map=main.map -o main.elf main.o
 arm-none-eabi-readelf -a main.elf > main.txt
+
+----------------------------------------
+
+echo "# autosar-linker" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/mvsr1729/autosar-linker.git
+git push -u origin main
