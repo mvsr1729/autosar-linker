@@ -1,0 +1,3 @@
+arm-none-eabi-gcc -Wall -nostdlib -fno-builtin -ffreestanding -c main.c
+arm-none-eabi-ld -s -Bsymbolic -gc-sections -Tmain.ld -static -Map=main.map -o main.elf main.o
+arm-none-eabi-readelf -a main.elf > main.txt
