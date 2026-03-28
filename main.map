@@ -1,5 +1,12 @@
 
-There are no discarded input sections
+Discarded input sections
+
+ .comment       0x00000000       0x27 main.o
+ .ARM.attributes
+                0x00000000       0x2a main.o
+ .comment       0x00000000       0x27 globals.o
+ .ARM.attributes
+                0x00000000       0x2a globals.o
 
 Memory Configuration
 
@@ -10,50 +17,30 @@ SOME_NAME        0x0000a000         0x00001000
 Linker script and memory map
 
 
-.text           0x0000a000       0x44
- main.o(.text)
+.text           0x0000a000       0x60
+ *(.text)
  .text          0x0000a000       0x44 main.o
                 0x0000a000                foo
+ .text          0x0000a044       0x1c globals.o
+                0x0000a044                bar
 
-.glue_7         0x0000a044        0x0
- .glue_7        0x0000a044        0x0 linker stubs
+.data           0x0000a060        0x8
+ *(.data)
+ .data          0x0000a060        0x4 main.o
+                0x0000a060                init_global
+ .data          0x0000a064        0x4 globals.o
+                0x0000a064                pqr
 
-.glue_7t        0x0000a044        0x0
- .glue_7t       0x0000a044        0x0 linker stubs
+.bss            0x0000a068        0x8
+ *(.bss)
+ .bss           0x0000a068        0x4 main.o
+                0x0000a068                uninit_global
+ .bss           0x0000a06c        0x4 globals.o
+                0x0000a06c                abc
 
-.vfp11_veneer   0x0000a044        0x0
- .vfp11_veneer  0x0000a044        0x0 linker stubs
-
-.v4_bx          0x0000a044        0x0
- .v4_bx         0x0000a044        0x0 linker stubs
-
-.iplt           0x0000a044        0x0
- .iplt          0x0000a044        0x0 main.o
-
-.rel.dyn        0x0000a044        0x0
- .rel.iplt      0x0000a044        0x0 main.o
-
-.data           0x0000a044        0x4
- main.o(.data)
- .data          0x0000a044        0x4 main.o
-                0x0000a044                init_global
-
-.igot.plt       0x0000a048        0x0
- .igot.plt      0x0000a048        0x0 main.o
-
-.bss            0x0000a048        0x4
- main.o(.bss)
- .bss           0x0000a048        0x4 main.o
-                0x0000a048                uninit_global
+/DISCARD/
+ *(*)
 LOAD main.o
+LOAD globals.o
 OUTPUT(main.elf elf32-littlearm)
 LOAD linker stubs
-
-.comment        0x00000000       0x26
- .comment       0x00000000       0x26 main.o
-                                 0x27 (size before relaxing)
-
-.ARM.attributes
-                0x00000000       0x2a
- .ARM.attributes
-                0x00000000       0x2a main.o

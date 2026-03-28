@@ -4,14 +4,19 @@ MEMORY {
 
 SECTIONS {
     .text : {
-        main.o (.text)
+        * (.text)
+        
     } > SOME_NAME
 
-    .data : {
-        main.o (.data)
+     .data : {
+        * (.data)
     } > SOME_NAME
-
+ 
     .bss : {
-        main.o (.bss)
-    } > SOME_NAME
+        * (.bss)
+    } > SOME_NAME 
+
+     /DISCARD/ : {
+        * (*)
+    } 
 }
