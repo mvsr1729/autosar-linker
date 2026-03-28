@@ -1,32 +1,59 @@
 
-Discarded input sections
-
- .text          0x00000000        0x0 main.o
- .data          0x00000000        0x0 main.o
- .bss           0x00000000        0x0 main.o
- .comment       0x00000000       0x27 main.o
- .ARM.attributes
-                0x00000000       0x2a main.o
+There are no discarded input sections
 
 Memory Configuration
 
 Name             Origin             Length             Attributes
+SOME_NAME        0x0000a000         0x00001000
 *default*        0x00000000         0xffffffff
 
 Linker script and memory map
 
+
+.text           0x0000a000       0x44
+ main.o(.text)
+ .text          0x0000a000       0x44 main.o
+                0x0000a000                foo
+
+.glue_7         0x0000a044        0x0
+ .glue_7        0x0000a044        0x0 linker stubs
+
+.glue_7t        0x0000a044        0x0
+ .glue_7t       0x0000a044        0x0 linker stubs
+
+.vfp11_veneer   0x0000a044        0x0
+ .vfp11_veneer  0x0000a044        0x0 linker stubs
+
+.v4_bx          0x0000a044        0x0
+ .v4_bx         0x0000a044        0x0 linker stubs
+
+.iplt           0x0000a044        0x0
+ .iplt          0x0000a044        0x0 main.o
+
+.rel.dyn        0x0000a044        0x0
+ .rel.iplt      0x0000a044        0x0 main.o
+
+.data           0x0000a044        0x4
+ main.o(.data)
+ .data          0x0000a044        0x4 main.o
+                0x0000a044                init_global
+
+.igot.plt       0x0000a048        0x0
+ .igot.plt      0x0000a048        0x0 main.o
+
+.bss            0x0000a048        0x4
+ main.o(.bss)
+ .bss           0x0000a048        0x4 main.o
+                0x0000a048                uninit_global
 LOAD main.o
 OUTPUT(main.elf elf32-littlearm)
 LOAD linker stubs
 
-.glue_7         0x00000000        0x0
- .glue_7        0x00000000        0x0 linker stubs
+.comment        0x00000000       0x26
+ .comment       0x00000000       0x26 main.o
+                                 0x27 (size before relaxing)
 
-.glue_7t        0x00000000        0x0
- .glue_7t       0x00000000        0x0 linker stubs
-
-.vfp11_veneer   0x00000000        0x0
- .vfp11_veneer  0x00000000        0x0 linker stubs
-
-.v4_bx          0x00000000        0x0
- .v4_bx         0x00000000        0x0 linker stubs
+.ARM.attributes
+                0x00000000       0x2a
+ .ARM.attributes
+                0x00000000       0x2a main.o
