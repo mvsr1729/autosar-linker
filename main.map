@@ -11,32 +11,49 @@ Discarded input sections
 Memory Configuration
 
 Name             Origin             Length             Attributes
-SOME_NAME        0x0000a000         0x00001000
+ROM              0x0000a000         0x00001000
+RAM              0x0000c000         0x00001000
 *default*        0x00000000         0xffffffff
 
 Linker script and memory map
 
 
-.text           0x0000a000       0x60
+.Subaru         0x0000a000       0xc4
+ *(pqr)
+ pqr            0x0000a000       0xc4 main.o
+                0x0000a000                xyz
+
+.text           0x0000a0c4       0x60
  *(.text)
- .text          0x0000a000       0x44 main.o
-                0x0000a000                foo
- .text          0x0000a044       0x1c globals.o
-                0x0000a044                bar
+ .text          0x0000a0c4       0x44 main.o
+                0x0000a0c4                foo
+ .text          0x0000a108       0x1c globals.o
+                0x0000a108                bar
 
-.data           0x0000a060        0x8
+.rodatadata     0x0000a124        0x8
+ *(abc)
+ abc            0x0000a124        0x4 main.o
+                0x0000a124                uninit_global
+ *(.rodata)
+ .rodata        0x0000a128        0x4 globals.o
+                0x0000a128                pqr
+                0x0000a12c                        _src_start_data_ = .
+
+.data           0x0000c000        0x4 load address 0x0000a12c
+                0x0000c000                        _dst_start_data_ = .
  *(.data)
- .data          0x0000a060        0x4 main.o
-                0x0000a060                init_global
- .data          0x0000a064        0x4 globals.o
-                0x0000a064                pqr
+ .data          0x0000c000        0x4 main.o
+                0x0000c000                init_global
+ .data          0x0000c004        0x0 globals.o
+                0x0000c004                        _dst_end_data_ = .
 
-.bss            0x0000a068        0x8
+.bss            0x0000c004        0x4
+                0x0000c004                        _start_bss_ = .
  *(.bss)
- .bss           0x0000a068        0x4 main.o
-                0x0000a068                uninit_global
- .bss           0x0000a06c        0x4 globals.o
-                0x0000a06c                abc
+ .bss           0x0000c004        0x0 main.o
+ .bss           0x0000c004        0x4 globals.o
+                0x0000c004                abc
+                0x0000c008                        _end_bss_ = .
 
 /DISCARD/
  *(*)

@@ -1,20 +1,35 @@
 MEMORY {
-    SOME_NAME : ORIGIN = 0xA000 , LENGTH = 0x1000
+    ROM : ORIGIN = 0xA000 , LENGTH = 0x1000
+    RAM : ORIGIN = 0xC000 , LENGTH = 0x1000
 }
 
 SECTIONS {
-    .text : {
-        * (.text)
+    .Subaru : {
+        * (pqr)
         
-    } > SOME_NAME
+    } > ROM AT > ROM
 
-     .data : {
-        * (.data)
-    } > SOME_NAME
+    .text : {
+        * (.text)   
+    } > ROM  AT > ROM
+
+     .rodatadata : {
+        * (abc)
+        * (.rodata)
+        _src_start_data_ = .;
+    } > ROM AT > ROM
  
+     .data : {
+        _dst_start_data_ = .;
+        * (.data)
+        _dst_end_data_ = .;
+    } > RAM AT > ROM
+
     .bss : {
+        _start_bss_ = .;
         * (.bss)
-    } > SOME_NAME 
+        _end_bss_ = .;
+    } > RAM AT > RAM
 
      /DISCARD/ : {
         * (*)
