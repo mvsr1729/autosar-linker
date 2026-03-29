@@ -3,19 +3,27 @@ MEMORY {
     RAM : ORIGIN = 0xC000 , LENGTH = 0x1000
 }
 
+a = 16;
+
 SECTIONS {
+    b = 20;
     .Subaru : {
         * (pqr)
         
     } > ROM AT > ROM
 
     .text : {
-        * (.text)   
+        * (.text)
+        c = a+b;
+        d = a-b;
+        e = a*b;
+        f = b%a;
     } > ROM  AT > ROM
 
-     .rodatadata : {
+     .rodata : {
         * (abc)
         * (.rodata)
+        . = . + a + 16;
         _src_start_data_ = .;
     } > ROM AT > ROM
  
